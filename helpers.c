@@ -1,32 +1,8 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include <helpers.h>
-
-/*TODO: switch derction of the list do shift instend push*/
-void fibo(int length, Node *head_ref)
-{
-    int i, num1 = 1, num2 = 1, temp;
-    Node *temp_node = head_ref;
-    temp_node->val = num1;
-
-    for (i = 1; i < length; i++)
-    {
-        temp_node->next = (Node *)malloc(sizeof(Node));
-        temp_node = temp_node->next;
-        if (i == 1)
-            temp_node->val = num2;
-        else
-        {
-            temp_node->val = num1 + num2;
-            temp = num1 + num2;
-            num1 = num2;
-            num2 = temp;
-        }
-    }
-    temp_node->next = head_ref;
-}
+#include "helpers.h"
 
 void fibo(Node **head_ref, int length)
 {
@@ -61,38 +37,41 @@ void fibo(Node **head_ref, int length)
     first_node->next = *head_ref;
 }
 
-
-char *get_file_text(Node *head_ref)
+void printFibonacci(Node *head_ref, int length)
 {
-    char *str = (char *)malloc(sizeof(char) * 100);
-    str = "Fibonacci Series in reverse order from the";
-    /*  str += "term";*/
-    return str;
-}
-
-int printFibonacci(Node *head_ref, int length)
-{
-    int count = 0, i, j;
+    int count = 0, i;
     Node *ptr = head_ref;
 
     for (i = length; i != 0; i--)
     {
-        for (j = 0; j < length - 1; j++)
-        {
-            ptr = ptr->next;
-        }
         printf("%d >>> %d\n", count, ptr->val);
+        ptr = ptr->next;
         count++;
     }
-
-    return 0;
 }
 
-int scan_int()
+void make_fibo_file(char *file_name, Node *fibo_list, int length)
+{
+    FILE *fp;
+    int i;
+    Node *ptr = fibo_list;
+
+    fp = fopen(file_name, "w");
+
+    fprintf(fp, "The %d terms of fibonacci series in reverse order.\n", length);
+
+    for (i = length; i != 0; i--)
+    {
+        fprintf(fp, "%d\n", ptr->val);
+        ptr = ptr->next;
+    }
+}
+
+int scan_int(int *num_ref)
 {
     char *str;
     char c;
-    int i = 0, n = 0, line_size = 0;
+    int i = 0, line_size = 0;
 
     line_size = ENLARGE_LINE_SIZE(line_size);
     str = (char *)malloc(line_size * sizeof(char));
@@ -101,7 +80,7 @@ int scan_int()
 
     while ((c = getchar()) != '\n' && c != EOF)
     {
-        if (i == LINE_MAX)
+        if (i == line_size)
         {
             line_size = ENLARGE_LINE_SIZE(line_size);
             CHAR_REALLOC(str, line_size);
@@ -110,8 +89,11 @@ int scan_int()
         i++;
     }
     str[i] = '\0';
-
-    printf("length: %d\n", strlen(str));
+    if (i < MIN_LENGTH)
+    {
+        printf("too short\n");
+        return FALSE;
+    }
     for (i = 0; i < strlen(str); i++)
     {
         if (!isdigit(str[i]))
@@ -122,27 +104,8 @@ int scan_int()
         }
     }
 
-    n = strtol(str, NULL, 10);
+    *num_ref = strtol(str, NULL, 10);
 
-    printf("your num is: %d\n", n);
     free(str);
     return TRUE;
 }
-
-/*void scan_int()
-{
-    char *end;
-    char buf[LINE_MAX];
-    int n;
-    do
-    {
-        if (!fgets(buf, sizeof buf, stdin))
-            break;
-        printf("your input is: %s\n", buf);
-
-        buf[strlen(buf) - 1] = 0;
-
-        n = strtol(buf, &end, 10);
-    } while (end != buf + strlen(buf));
-    printf("your num is: %d\n", n);
-}*/

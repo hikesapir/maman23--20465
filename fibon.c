@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include <helpers.h>
+#include "helpers.h"
 
 int main(int arg_count, char *arg_vector[])
 {
-    Node linked_list;
     int fibo_length;
+	 Node *linked_list;
 
     if (arg_count < MAX_MAIN_ARGS)
     {
@@ -17,17 +17,18 @@ int main(int arg_count, char *arg_vector[])
         return 1;
     }
 
-    printf("Please enter fibonacci sequence length: \n");
 
-    fibo(90, &linked_list);
-    printFibonacci(&linked_list, 90);
+    do
+    {
+        printf("Please enter fibonacci sequence length: \n");
 
-    printf("arg_count: %d\t arg_vector:%s\n", arg_count, arg_vector[1]);
-    /*
-        FILE *fp;
-        fp = fopen("file.txt", "w+");
-        fprintf(fp, get_file_text(linked_list));
-        fclose(fp);
-    */
+    } while (scan_int(&fibo_length) == FALSE);
+
+    printf("fibo_length: %d\n",fibo_length);
+
+	fibo(&linked_list, fibo_length);
+	printFibonacci(linked_list, fibo_length);
+	make_fibo_file(arg_vector[1], linked_list, fibo_length);
+
     return 0;
 }
