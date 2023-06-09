@@ -17,10 +17,7 @@ int fibo(Node **head_ref, int length)
     int i, num1 = 1, num2 = 1, temp;
     Node *temp_node, *first_node;
 
-    if (length < MIN_LENGTH)
-        return FALSE;
-
-    for (i = 0; i < length; i++)
+    for (i = 0; i <= length; i++)
     {
         temp_node = (Node *)malloc(sizeof(Node));
         if (temp_node == NULL)
@@ -66,7 +63,7 @@ void print_fibonacci(Node *head_ref, int length)
     Node *ptr = head_ref;
 
     printf("The %d terms of fibonacci series in reverse order.\n", length);
-    for (i = length; i != 0; i--)
+    for (i = length; i >= 0; i--)
     {
         printf("%d >>> %d\n", i, ptr->val);
         ptr = ptr->next;
@@ -90,14 +87,14 @@ void make_fibo_file(char *file_name, Node *fibo_list, int length)
     if (fp == NULL)
     {
         printf("Error: can not create the file %s\n", file_name);
-        return 1;
+        return;
     }
 
-    fprintf(fp, "The %d terms of fibonacci series in reverse order.\n", length);
+    fprintf(fp, "The %d terms of fibonacci series in reverse order:\n", length);
 
-    for (i = length; i != 0; i--)
+    for (i = length; i >= 0; i--)
     {
-        fprintf(fp, "%d\n", ptr->val);
+        fprintf(fp, "%d >>> %d\n", i, ptr->val);
         ptr = ptr->next;
     }
 
@@ -164,13 +161,12 @@ int scan_int(int *num_ref)
 Release the allocated memory of a linked list
 
 @param *head_ref - reference to the head of list
-@param length - the list length
 */
 void free_linked_list(Node *head_ref, int length)
 {
     Node *tmp;
 
-    while (length)
+    while (length >= 0)
     {
         tmp = head_ref;
         head_ref = head_ref->next;

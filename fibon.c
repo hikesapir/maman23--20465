@@ -32,6 +32,6 @@ int main(int arg_count, char *arg_vector[])
     /* print to the fibonacci series */
     make_fibo_file(arg_vector[1], fibo_list, fibo_length);
     /* release the allocated memory */
-    free_linked_list(fibo_list);
+    free_linked_list(fibo_list, fibo_length);
     return 0;
 }
